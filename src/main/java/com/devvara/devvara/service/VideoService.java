@@ -3,6 +3,8 @@ package com.devvara.devvara.service;
 import com.devvara.devvara.domain.Video;
 import com.devvara.devvara.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -16,18 +18,16 @@ public class VideoService {
 
     private final VideoRepository videoRepository;
 
-    public List<Video> findVideos(String title, Long channelId, int page, int size) {
-        System.out.println(channelId);
-
+    public Page<Video> findVideos(String[] language, String title, Long channelId, int page, int size) {
         if (StringUtils.hasText(title)) {
-            return videoRepository.findByVideoTitleContaing(title, page, size);
+            return videoRepository.findByVideoTitleContaing(language, title, page, size);
         }
 
         if (channelId != null) {
             return videoRepository.findByChannelId(channelId, page, size);
         }
 
-        return videoRepository.findAll(page, size);
+        return videoRepository.findAll(language, page, size);
     }
 
 }
