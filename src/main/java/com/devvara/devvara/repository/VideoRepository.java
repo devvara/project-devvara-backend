@@ -13,9 +13,14 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
 @Repository
 @RequiredArgsConstructor
 public class VideoRepository {
+
+//    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final EntityManager em;
 
@@ -62,8 +67,8 @@ public class VideoRepository {
     }
 
     public Page<Video> findByVideoTitleContaing(String[] language, String title, int page, int size) {
-        TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language = :language and v.videoTitle like :title order by v.publishTime desc", Video.class);
-        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language = :language and v.videoTitle like :title", Long.class);
+        TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) and v.videoTitle like :title order by v.publishTime desc", Video.class);
+        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language) and v.videoTitle like :title", Long.class);
 
         dataQ.setParameter("language", Arrays.asList(language));
         dataQ.setParameter("title", "%" + title + "%");

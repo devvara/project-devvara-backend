@@ -24,8 +24,9 @@ public class Video {
     @Column(name = "id")
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne(fetch = LAZY)
+//    @JsonIgnore
+//    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "channel_id")
     private Channel channel;
 
