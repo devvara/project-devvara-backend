@@ -51,11 +51,12 @@ public class VideoRepository {
 //    }
 
     public Page<Video> findAll(String[] language, int page, int size) {
-        TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) order by v.publishTime desc", Video.class);
-        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language)", Long.class);
+        TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) and v.status = 1 order by v.publishTime desc", Video.class);
+        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language) and v.status = 1", Long.class);
+        int startPosition = (page > 1) ? (page - 1) * size : 0;
 
         dataQ.setParameter("language", Arrays.asList(language));
-        dataQ.setFirstResult(page * size);
+        dataQ.setFirstResult(startPosition);
         dataQ.setMaxResults(size);
 
         countQ.setParameter("language", Arrays.asList(language));
@@ -67,12 +68,13 @@ public class VideoRepository {
     }
 
     public Page<Video> findByVideoTitleContaing(String[] language, String title, int page, int size) {
-        TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) and v.videoTitle like :title order by v.publishTime desc", Video.class);
-        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language) and v.videoTitle like :title", Long.class);
+        TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) and v.videoTitle like :title and v.status = 1 order by v.publishTime desc", Video.class);
+        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language) and v.videoTitle like :title and v.status = 1 ", Long.class);
+        int startPosition = (page > 1) ? (page - 1) * size : 0;
 
         dataQ.setParameter("language", Arrays.asList(language));
         dataQ.setParameter("title", "%" + title + "%");
-        dataQ.setFirstResult(page * size);
+        dataQ.setFirstResult(startPosition);
         dataQ.setMaxResults(size);
 
         countQ.setParameter("language", Arrays.asList(language));
@@ -85,11 +87,12 @@ public class VideoRepository {
     }
 
     public Page<Video> findByChannelId(Long channelId, int page, int size) {
-        TypedQuery<Video> dataQ =  em.createQuery("select v from Video v where v.channel.id = :channelId order by v.publishTime desc", Video.class);
-        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v where v.channel.id = :channelId", Long.class);
+        TypedQuery<Video> dataQ =  em.createQuery("select v from Video v where v.channel.id = :channelId and v.status= 1 order by v.publishTime desc", Video.class);
+        TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v where v.channel.id = :channelId and v.status= 1", Long.class);
+        int startPosition = (page > 1) ? (page - 1) * size : 0;
 
         dataQ.setParameter("channelId", channelId);
-        dataQ.setFirstResult(page * size);
+        dataQ.setFirstResult(startPosition);
         dataQ.setMaxResults(size);
 
         countQ.setParameter("channelId", channelId);
