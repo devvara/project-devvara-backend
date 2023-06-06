@@ -9,47 +9,28 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 @RequiredArgsConstructor
 public class VideoRepository {
 
-//    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final EntityManager em;
 
-//    public List<Video> findAll(int page, int size) {
-//        TypedQuery<Video> q =  em.createQuery("select i from Video i order by i.publishTime desc", Video.class);
-//        q.setFirstResult(page * size);
-//        q.setMaxResults(size);
-//
-//        return q.getResultList();
-//    }
-//
-//    public List<Video> findByVideoTitleContaing(String title, int page, int size) {
-//        TypedQuery<Video> q =  em.createQuery("select i from Video i where i.videoTitle like :title order by i.publishTime desc", Video.class);
-//        q.setParameter("title", "%" + title + "%");
-//        q.setFirstResult(page * size);
-//        q.setMaxResults(size);
-//
-//        return q.getResultList();
-//    }
-//
-//    public List<Video> findByChannelId(Long channelId, int page, int size) {
-//        TypedQuery<Video> q =  em.createQuery("select i from Video i where i.channel.id = :channelId order by i.publishTime desc", Video.class);
-//        q.setParameter("channelId", channelId);
-//        q.setFirstResult(page * size);
-//        q.setMaxResults(size);
-//
-//        return q.getResultList();
-//    }
-
+    /**
+     * Find all videos
+     *
+     * @param language
+     * @param page
+     * @param size
+     * @return Page object
+     */
     public Page<Video> findAll(String[] language, int page, int size) {
         TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) and v.status = 1 order by v.publishTime desc", Video.class);
         TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language) and v.status = 1", Long.class);
@@ -64,9 +45,18 @@ public class VideoRepository {
         List<Video> videos = dataQ.getResultList();
         Long total = countQ.getSingleResult();
 
-        return new PageImpl<>(videos, PageRequest.of(page, size), total);
+        return new PageImpl<Video>(videos, PageRequest.of(page, size), total);
     }
 
+    /**
+     * Find all videos by title
+     *
+     * @param language
+     * @param title
+     * @param page
+     * @param size
+     * @return Page object
+     */
     public Page<Video> findByVideoTitleContaing(String[] language, String title, int page, int size) {
         TypedQuery<Video> dataQ = em.createQuery("select v from Video v join fetch v.channel c where c.language in (:language) and v.videoTitle like :title and v.status = 1 order by v.publishTime desc", Video.class);
         TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v join v.channel c where c.language in (:language) and v.videoTitle like :title and v.status = 1 ", Long.class);
@@ -83,9 +73,17 @@ public class VideoRepository {
         List<Video> videos = dataQ.getResultList();
         Long total = countQ.getSingleResult();
 
-        return new PageImpl<>(videos, PageRequest.of(page, size), total);
+        return new PageImpl<Video>(videos, PageRequest.of(page, size), total);
     }
 
+    /**
+     * Find all videos by channel id
+     *
+     * @param channelId
+     * @param page
+     * @param size
+     * @return Page object
+     */
     public Page<Video> findByChannelId(Long channelId, int page, int size) {
         TypedQuery<Video> dataQ =  em.createQuery("select v from Video v where v.channel.id = :channelId and v.status= 1 order by v.publishTime desc", Video.class);
         TypedQuery<Long> countQ = em.createQuery("select count(v) from Video v where v.channel.id = :channelId and v.status= 1", Long.class);
@@ -100,6 +98,6 @@ public class VideoRepository {
         List<Video> videos = dataQ.getResultList();
         Long total = countQ.getSingleResult();
 
-        return new PageImpl<>(videos, PageRequest.of(page, size), total);
+        return new PageImpl<Video>(videos, PageRequest.of(page, size), total);
     }
 }
