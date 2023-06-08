@@ -2,6 +2,7 @@ package com.devvara.devvara.api;
 
 import com.devvara.devvara.domain.Video;
 import com.devvara.devvara.service.VideoService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class VideoApiController {
     private final VideoService videoService;
 
     @GetMapping("/api/v1/videos")
-    public List<VideoListDto> videosV2(@RequestParam(required = false) String[] language,
+    public Result videosV2(@RequestParam(required = false) String[] language,
                                 @RequestParam(required = false) String title,
                                 @RequestParam(required = false) Long channelId,
                                 @RequestParam(defaultValue = "1") int page,
@@ -34,23 +35,15 @@ public class VideoApiController {
         List<Video> content = pageData.getContent();
         int pageNumber = pageData.getNumber();
         int totalPages = pageData.getTotalPages();
-        List<VideoListDto> result = new ArrayList<>();
-        result.add(new VideoListDto(content, pageNumber, totalPages));
 
-        return result;
+        return new Result(content, pageNumber, totalPages);
     }
 
     @Data
-    static class VideoListDto {
-        private List<Video> content;
-        private int pageNumber;
-        private int totalPage;
-
-        public VideoListDto(List<Video> content, int pageNumber, int totalPages) {
-            this.content = content;
-            this.pageNumber = pageNumber;
-            this.totalPage = totalPages;
-        }
+    @AllArgsConstructor
+    static class Result<T> {
+        private T items;
+        private int current_page;
+        private int total_count;
     }
-
 }
