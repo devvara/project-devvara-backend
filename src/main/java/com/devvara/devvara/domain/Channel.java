@@ -1,5 +1,6 @@
 package com.devvara.devvara.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,8 @@ public class Channel {
     @Column(name = "thumbnail")
     private String thumbnail;
 
+    @JsonIgnore
     private LocalDateTime created_at;
+    @JsonIgnore
     private LocalDateTime updated_at;
 }

@@ -47,6 +47,8 @@ public class Video {
 
     private Short status;
 
+    @JsonIgnore
     private LocalDateTime created_at;
+    @JsonIgnore
     private LocalDateTime updated_at;
 }
