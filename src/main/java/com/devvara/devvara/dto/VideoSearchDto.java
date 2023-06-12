@@ -1,4 +1,4 @@
-package com.devvara.devvara.domain;
+package com.devvara.devvara.dto;
 
 import lombok.Getter;
 import lombok.Setter;
