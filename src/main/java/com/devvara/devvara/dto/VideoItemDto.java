@@ -19,7 +19,6 @@ public class VideoItemDto {
 
     private List<ChannelItemDto> channelItemDtoList = new ArrayList<>();
 
-
     public void addChannelItemDto(ChannelItemDto channelItemDto){
         channelItemDtoList.add(channelItemDto);
     }
