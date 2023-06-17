@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class VideoSearch {
+public class VideoSearchDto {
 
     public String[] language;
     public String title;

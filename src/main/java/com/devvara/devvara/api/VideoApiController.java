@@ -1,20 +1,16 @@
 package com.devvara.devvara.api;
 
 import com.devvara.devvara.domain.Video;
-import com.devvara.devvara.domain.VideoSearch;
+import com.devvara.devvara.dto.VideoSearchDto;
 import com.devvara.devvara.service.VideoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +35,7 @@ public class VideoApiController {
     }
 
     @GetMapping("api/v2/videos")
-    public String videosV2(@ModelAttribute("videoSearch") VideoSearch videoSearch, Model model){
+    public String videosV2(@ModelAttribute("videoSearch") VideoSearchDto videoSearch, Model model){
 
         return "";
     }
