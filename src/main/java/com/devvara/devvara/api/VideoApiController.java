@@ -1,6 +1,7 @@
 package com.devvara.devvara.api;
 
 import com.devvara.devvara.domain.Video;
+import com.devvara.devvara.dto.VideoItemDto;
 import com.devvara.devvara.dto.VideoSearchDto;
 import com.devvara.devvara.service.VideoService;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,9 @@ public class VideoApiController {
     }
 
     @GetMapping("api/v2/videos")
-    public String videosV2(@ModelAttribute("videoSearch") VideoSearchDto videoSearch, Model model){
+    public String videosV2(VideoSearchDto videoSearchDto) {
+
+        List<VideoItemDto> videoItemDtoList = videoService.getVideoList(videoSearchDto);
 
         return "";
     }
