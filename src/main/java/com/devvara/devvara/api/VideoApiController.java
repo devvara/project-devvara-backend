@@ -8,10 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.ui.Model;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,11 +39,19 @@ public class VideoApiController {
     }
 
     @GetMapping("api/v2/videos")
-    public String videosV2(VideoSearchDto videoSearchDto) {
+    public Result videosV2(VideoSearchDto videoSearchDto) {
 
-        List<VideoItemDto> videoItemDtoList = videoService.getVideoList(videoSearchDto);
+        Pageable pageable = PageRequest.of(Optional.of(videoSearchDto.getPage()).isPresent() ? videoSearchDto.getPage() : 0, 12);
 
-        return "";
+        List<Video> videos = videoService.getVideoList(videoSearchDto, pageable);
+        Long totalCount = videoService.getVideoListTotalCount(videoSearchDto);
+        int totalCountNum = totalCount.intValue();
+
+        List<VideoItemDto> videoItemDtoList = videos.stream()
+                .map(o -> new VideoItemDto(o))
+                .collect(Collectors.toList());
+
+        return new Result(videoItemDtoList, pageable.getPageNumber(), totalCountNum);
     }
 
     @Data

@@ -1,5 +1,7 @@
 package com.devvara.devvara.dto;
 
+import com.devvara.devvara.domain.Channel;
+import com.devvara.devvara.domain.Video;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,11 +18,16 @@ public class VideoItemDto {
     private String videoDescription;
     private String videoThumbnail;
     private String publishTime;
+    private Channel channel;
 
-    private List<ChannelItemDto> channelItemDtoList = new ArrayList<>();
-
-    public void addChannelItemDto(ChannelItemDto channelItemDto){
-        channelItemDtoList.add(channelItemDto);
+    public VideoItemDto(Video video) {
+        id = video.getId();
+        videoYoutubeId = video.getVideoYoutubeId();
+        videoTitle = video.getVideoTitle();
+        videoDescription = video.getVideoDescription();
+        videoThumbnail = video.getVideoThumbnail();
+        publishTime = video.getPublishTime();
+        channel = video.getChannel();
     }
 
 }

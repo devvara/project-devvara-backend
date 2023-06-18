@@ -13,17 +13,14 @@ public interface VideoQueryRepository extends JpaRepository<Video, Long> {
 
     @Query("select v from Video v " +
             "where v.channel.language in (:language) " +
-            "and v.videoTitle like :title " +
             "and v.status = 1 " +
             "order by v.publishTime desc"
     )
-    List<VideoItemDto> findVideos(@Param("language") String[] language, @Param("title") String title, Pageable pageable);
+    List<Video> findVideos(@Param("language") String[] language, Pageable pageable);
 
-    @Query("select v from Video v " +
+    @Query("select count(v) from Video v " +
             "where v.channel.language in (:language) " +
-            "and v.videoTitle like :title " +
             "and v.status = 1"
     )
-    Long countVideo(@Param("language") String[] language, @Param("title") String title);
-
+    Long countVideos(@Param("language") String[] language);
 }
