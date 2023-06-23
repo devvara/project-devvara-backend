@@ -1,0 +1,10 @@
+package com.devvara.devvara.dto.login;
+
+import lombok.Data;
+
+@Data
+public class LoginInfoDto {
+    private Long userId;
+    private String email;
+    private String name;
+}

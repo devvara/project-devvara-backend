@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, columnDefinition = "bigint unsigned")
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -35,4 +37,12 @@ public class User {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "bigint unsigned"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", columnDefinition = "bigint unsigned"))
+
+    private Set<Role> roles = new HashSet<>();
+
 }
