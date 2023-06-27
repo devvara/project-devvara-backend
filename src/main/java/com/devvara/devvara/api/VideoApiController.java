@@ -38,7 +38,7 @@ public class VideoApiController {
         return new Result(content, pageNumber, totalPages);
     }
 
-    @GetMapping("api/v2/videos")
+    @GetMapping("/api/v2/videos")
     public Result videosV2(VideoSearchDto videoSearchDto) {
 
         Pageable pageable = PageRequest.of(Optional.of(videoSearchDto.getPage()).isPresent() ? videoSearchDto.getPage() : 0, 12);

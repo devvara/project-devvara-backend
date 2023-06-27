@@ -1,8 +1,8 @@
 package com.devvara.devvara.security.jwt.provider;
 
-import com.devvara.devvara.dto.login.LoginInfoDto;
+import com.devvara.devvara.security.jwt.util.LoginInfoDto;
 import com.devvara.devvara.security.jwt.token.JwtAuthenticationToken;
-import com.devvara.devvara.security.jwt.token.JwtTokenizer;
+import com.devvara.devvara.security.jwt.util.JwtTokenizer;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -1,4 +1,4 @@
-package com.devvara.devvara.dto.login;
+package com.devvara.devvara.security.jwt.util;
 
 import lombok.Data;
 

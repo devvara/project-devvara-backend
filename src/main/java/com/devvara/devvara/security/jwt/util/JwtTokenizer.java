@@ -1,4 +1,4 @@
-package com.devvara.devvara.security.jwt.token;
+package com.devvara.devvara.security.jwt.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
