@@ -22,18 +22,16 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/user/")
+@RequestMapping("/api/v1")
 public class UserApiController {
 
     private final JwtTokenizer jwtTokenizer;
 
     private final UserService userService;
 
-    private final RefreshToken refreshToken;
-
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public ResponseEntity signup(@RequestBody @Valid UserSignupDto userSignupDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
