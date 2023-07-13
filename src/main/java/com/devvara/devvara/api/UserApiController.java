@@ -1,7 +1,9 @@
 package com.devvara.devvara.api;
 
 import com.devvara.devvara.domain.RefreshToken;
+import com.devvara.devvara.domain.Role;
 import com.devvara.devvara.domain.User;
+import com.devvara.devvara.dto.UserLoginDto;
 import com.devvara.devvara.dto.UserSignupDto;
 import com.devvara.devvara.dto.UserSignupResponseDto;
 import com.devvara.devvara.security.jwt.util.JwtTokenizer;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,6 +57,17 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid )
+    public ResponseEntity login(@RequestBody @Valid UserLoginDto loginDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.findByEmail(loginDto.getEmail());
+        if(!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        
+        List<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+    }
 
 }
