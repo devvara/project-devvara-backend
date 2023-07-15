@@ -7,6 +7,7 @@ import com.devvara.devvara.dto.UserLoginDto;
 import com.devvara.devvara.dto.UserSignupDto;
 import com.devvara.devvara.dto.UserSignupResponseDto;
 import com.devvara.devvara.security.jwt.util.JwtTokenizer;
+import com.devvara.devvara.service.RefreshTokenService;
 import com.devvara.devvara.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,8 @@ public class UserApiController {
     private final JwtTokenizer jwtTokenizer;
 
     private final UserService userService;
+
+    private final RefreshTokenService refreshTokenService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -66,8 +69,19 @@ public class UserApiController {
         if(!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())){
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
-        
+
         List<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+
+        // Create JWT token
+        String accessToken = jwtTokenizer.createAccessToken(user.getId(), user.getEmail(), user.getName(), roles);
+        String refreshToken = jwtTokenizer.createRefreshToken(user.getId(), user.getEmail(), user.getName(), roles);
+
+        // Save RefreshToken at the DB
+        RefreshToken refreshTokenEntity = new RefreshToken();
+        refreshTokenEntity.setValue(refreshToken);
+        refreshTokenEntity.setUserId(user.getId());
+        refreshTokenService.addRefreshToken(refreshTokenEntity);
+
     }
 
 }
